@@ -2598,10 +2598,19 @@ end
     pcall(function() Storage.Data = Decode(readfile(k) or '{}') end)
     spawn(function() while task.wait(Storage.WRITE_DELAY) do Storage:Save() end end)
     CreateTraceback('Initalize', "Initalizing script..")
-    for _gcIdx, _gcConn in getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.Settings.Buttons.Page2.FastModeButton.Activated) do
-        print(_gcConn)
-        _gcConn.Function()
+    pcall(function()
+    local Main = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
+
+    if Main and Main:FindFirstChild("Settings") then
+        for _, _gcConn in getconnections(
+            Main.Settings.Buttons.Page2.FastModeButton.Activated
+        ) do
+            pcall(function()
+                _gcConn.Function()
+            end)
+        end
     end
+end)
     local k = {}
     SetTask("MainTask", 'n/a')
     SetTask("SubTask", 'n/a')
